@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futbol Chempionati — O'ynaladigan Futbol O'yini</title>
+  <meta name="description" content="Brauzerda haqiqiy futbol o'yini: jamoangizni boshqaring, pas bering, zarba yo'llang va gollar uring!">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="game-wrapper">
+    <!-- Top Game Bar / Scoreboard -->
+    <header class="match-scoreboard" id="matchScoreboard">
+      <div class="score-team home-side">
+        <div class="team-emblem" id="homeEmblem">👑</div>
+        <div class="team-meta">
+          <span class="team-title" id="homeTeamName">Real Madrid</span>
+          <span class="team-badge-sub">SIZ (1-O'yinchi)</span>
+        </div>
+        <div class="team-goals" id="homeGoalsDisplay">0</div>
+      </div>
+
+      <div class="match-center-clock">
+        <div class="tournament-name">🏆 CHAMPIONS CUP 2026</div>
+        <div class="game-timer" id="gameTimerDisplay">00:00</div>
+        <div class="match-half" id="matchHalfDisplay">1-BO'LIM</div>
+      </div>
+
+      <div class="score-team away-side">
+        <div class="team-goals" id="awayGoalsDisplay">0</div>
+        <div class="team-meta" style="text-align: right;">
+          <span class="team-title" id="awayTeamName">Manchester City</span>
+          <span class="team-badge-sub">KOMPYUTER (AI)</span>
+        </div>
+        <div class="team-emblem" id="awayEmblem">🦅</div>
+      </div>
+    </header>
+
+    <!-- Main Game Canvas Container -->
+    <div class="canvas-container" id="canvasContainer">
+      <canvas id="footballCanvas" width="1200" height="720"></canvas>
+
+      <!-- On-Screen Shot Power Meter -->
+      <div class="power-meter-container" id="powerMeterContainer">
+        <div class="power-meter-label">ZARBA KUCHI</div>
+        <div class="power-meter-track">
+          <div class="power-meter-bar" id="powerMeterBar"></div>
+        </div>
+      </div>
+
+      <!-- Stamina / Active Player UI -->
+      <div class="player-hud" id="playerHud">
+        <div class="hud-player-name" id="hudPlayerName">Hujumchi</div>
+        <div class="stamina-track">
+          <div class="stamina-bar" id="staminaBar"></div>
+        </div>
+      </div>
+
+      <!-- Goal Announcement Overlay -->
+      <div class="goal-banner" id="goalBanner">
+        <div class="goal-text">GOOOOL! ⚽🔥</div>
+        <div class="goal-subtext" id="goalSubtext">Ajoyib zarba!</div>
+      </div>
+
+      <!-- Match Start / Menu Overlay -->
+      <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-card">
+          <div class="menu-header">
+            <span class="menu-icon">⚽</span>
+            <h1 class="menu-main-title">FUTBOL <span>CHEMPIONATI</span></h1>
+            <p class="menu-tagline">Haqiqiy 5v5 futbol simulyatori: o'z jamoangizni maydonga olib chiqing!</p>
+          </div>
+
+          <div class="team-selection-grid">
+            <div class="select-box">
+              <label for="selectHomeTeam">Sizning Jamoangiz:</label>
+              <select id="selectHomeTeam" class="team-select">
+                <option value="real" selected>👑 Real Madrid</option>
+                <option value="barca">🔵🔴 Barcelona</option>
+                <option value="city">🦅 Manchester City</option>
+                <option value="arsenal">🔴 Arsenal</option>
+                <option value="uzbekistan">🇺🇿 O'zbekiston Terma Jamoasi</option>
+                <option value="nasaf">🐉 Nasaf (Qarshi)</option>
+                <option value="pakhtakor">🦁 Paxtakor (Toshkent)</option>
+                <option value="inter">🐍 Inter Milan</option>
+              </select>
+            </div>
+
+            <div class="select-box">
+              <label for="selectAwayTeam">Raqib Jamoa (AI):</label>
+              <select id="selectAwayTeam" class="team-select">
+                <option value="city" selected>🦅 Manchester City</option>
+                <option value="real">👑 Real Madrid</option>
+                <option value="barca">🔵🔴 Barcelona</option>
+                <option value="arsenal">🔴 Arsenal</option>
+                <option value="uzbekistan">🇺🇿 O'zbekiston Terma Jamoasi</option>
+                <option value="nasaf">🐉 Nasaf (Qarshi)</option>
+                <option value="pakhtakor">🦁 Paxtakor (Toshkent)</option>
+                <option value="inter">🐍 Inter Milan</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="match-settings-row">
+            <div class="setting-item">
+              <label for="selectDuration">O'yin Vaqti:</label>
+              <select id="selectDuration" class="setting-select">
+                <option value="180">3 Daqiqa (Tezkor)</option>
+                <option value="300" selected>5 Daqiqa (Standart)</option>
+                <option value="480">8 Daqiqa (To'liq)</option>
+              </select>
+            </div>
+
+            <div class="setting-item">
+              <label for="selectDifficulty">Qiyinlik Darajasi:</label>
+              <select id="selectDifficulty" class="setting-select">
+                <option value="easy">Oson (Yangi boshlovchi)</option>
+                <option value="medium" selected>O'rtacha (Haqiqiy)</option>
+                <option value="hard">Qiyin (Professional)</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="startGameBtn" class="btn-play-game">
+            <span>O'YINNI BOSHLASH ⚽</span>
+          </button>
+
+          <!-- Controls Help Box -->
+          <div class="controls-cheatsheet">
+            <h3>🎮 BOSHQARUV TUGMALARI:</h3>
+            <div class="keys-grid">
+              <div class="key-item"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> yoki <kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> : <strong>Yugurish / Harakat</strong></div>
+              <div class="key-item"><kbd>SPACE (Probel)</kbd> : <strong>ZARBA (bosib tursangiz kuchayadi)</strong></div>
+              <div class="key-item"><kbd>J</kbd> yoki <kbd>X</kbd> : <strong>PAS (Eng yaqin jamoadoshga)</strong></div>
+              <div class="key-item"><kbd>SHIFT</kbd> : <strong>TEZLASHISH (Sprint)</strong></div>
+              <div class="key-item"><kbd>E</kbd> yoki <kbd>C</kbd> : <strong>O'yinchini almashtirish</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Match Over / Results Overlay -->
+      <div class="menu-overlay" id="gameOverOverlay" style="display: none;">
+        <div class="menu-card" style="max-width: 550px;">
+          <h2 style="font-size: 2.2rem; color: var(--accent-green); margin-bottom: 0.5rem;" id="matchResultTitle">O'YIN YAKUNLANDI!</h2>
+          <div style="font-size: 3rem; font-weight: 900; margin: 1rem 0;" id="finalScoreDisplay">3 - 1</div>
+          
+          <div class="end-stats-box" id="endStatsBox">
+            <!-- Filled dynamically -->
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: center;">
+            <button class="btn-play-game" onclick="restartMatch()">QAYTA O'YNASH 🔄</button>
+            <button class="btn-play-game" style="background: rgba(255,255,255,0.15);" onclick="openMainMenu()">MENYU 📋</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- On-screen mobile/mouse virtual controls (optional helpful touch buttons) -->
+    <footer class="game-footer-bar">
+      <div class="quick-hints">
+        <span>🏃 <kbd>W A S D</kbd> Yugurish</span>
+        <span>💥 <kbd>SPACE</kbd> Kuchli Zarba</span>
+        <span>🎯 <kbd>J / X</kbd> Pas</span>
+        <span>⚡ <kbd>SHIFT</kbd> Tezlashish</span>
+        <span>🔄 <kbd>E / C</kbd> O'yinchi</span>
+      </div>
+
+      <div class="footer-actions">
+        <button id="pauseMatchBtn" class="action-btn">⏸️ To'xtatish</button>
+        <button id="soundToggleBtn" class="action-btn">🔊 Ovoz: Yoqilgan</button>
+        <button id="radarToggleBtn" class="action-btn">🗺️ Radar: Yoqilgan</button>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
